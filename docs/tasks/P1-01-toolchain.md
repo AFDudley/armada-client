@@ -12,7 +12,7 @@ Install Node 18.20.4 on kelce and create the npm-workspaces skeleton that every 
 - Repository files:
   - `.nvmrc` containing `18.20.4`.
   - `package.json`: `"private": true`, `"type": "module"`, `"workspaces": ["packages/*", "apps/*"]`,
-    `"engines": {"node": "18.20.4"}`, scripts `build` = `tsc -b`, `test` = `node --import tsx --test "packages/*/test/*.test.ts" "apps/*/test/*.test.ts"`,
+    `"engines": {"node": "18.20.4"}`, scripts `build` = `tsc -b`, `test` = `node scripts/test.mjs` (lists `packages/*/test/*.test.ts` and `apps/*/test/*.test.ts`, runs them with `node --import tsx --test`, and fails when none exist; Node 18 does not expand globs in `--test` arguments),
     `check` = `npm run build && npm test`. devDependencies: `typescript` 5.x, `tsx` 4.x, `@types/node` 18.x (exact
     versions pinned, no `^`).
   - `tsconfig.base.json`: `"module": "NodeNext"`, `"moduleResolution": "NodeNext"`, `"target": "ES2022"`, `"strict": true`,
