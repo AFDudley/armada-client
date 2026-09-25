@@ -3,25 +3,25 @@
 Depends on: P1-01. Read `docs/SPEC.md` D10.
 
 ## Goal
-Typed access to the nitro-railgun contracts and the encoders the wallet and relayer need.
+Typed access to the armada-nitro contracts and the encoders the wallet and relayer need.
 
 ## Read first
-- kelce `~/src/nitro-railgun/src/NitroRailgunAdjudicator.sol` (`depositBinding`, `depositFromNote`, `SHIELD`).
-- kelce `~/src/nitro-railgun/out/NitroRailgunAdjudicator.sol/NitroRailgunAdjudicator.json` and
+- kelce `~/src/armada-nitro/src/ArmadaNitroAdjudicator.sol` (`depositBinding`, `depositFromNote`, `SHIELD`).
+- kelce `~/src/armada-nitro/out/ArmadaNitroAdjudicator.sol/ArmadaNitroAdjudicator.json` and
   `out/HubCustodian.sol/HubCustodian.json` (field `abi`).
 - `vendor/armada-sdk/src/tx/decode.ts` (`TRANSACTION_STRUCT`, `TRANSACT_ABI`).
 
 ## Deliver
-- `scripts/sync-abis.mjs <nitro-railgun-root>`: copies the `abi` arrays into `packages/contracts/abi/NitroRailgunAdjudicator.json`
-  and `HubCustodian.json`, and writes `packages/contracts/abi/SOURCE.json` = `{ "repo": "AFDudley/nitro-railgun", "commit": "<git rev-parse HEAD of that root>" }`.
-  Run it against kelce `~/src/nitro-railgun` at `f1a1de4` and commit the outputs.
+- `scripts/sync-abis.mjs <armada-nitro-root>`: copies the `abi` arrays into `packages/contracts/abi/ArmadaNitroAdjudicator.json`
+  and `HubCustodian.json`, and writes `packages/contracts/abi/SOURCE.json` = `{ "repo": "AFDudley/armada-nitro", "commit": "<git rev-parse HEAD of that root>" }`.
+  Run it against kelce `~/src/armada-nitro` at `f1a1de4` and commit the outputs.
 - `packages/contracts/` (`@armada-client/contracts`) exporting:
 
 ```ts
 export const adjudicatorAbi: readonly object[];
 export const custodianAbi: readonly object[];
 export const SHIELD_ALLOCATION_TYPE = 3;
-/** keccak256(abi.encode(bytes32 channelId, uint256 expectedHeld)) — NitroRailgunAdjudicator.depositBinding */
+/** keccak256(abi.encode(bytes32 channelId, uint256 expectedHeld)) — ArmadaNitroAdjudicator.depositBinding */
 export function depositBinding(channelId: `0x${string}`, expectedHeld: bigint): `0x${string}`;
 /** calldata for depositFromNote(channelId, expectedHeld, [transaction]) */
 export function encodeDepositFromNote(channelId: `0x${string}`, expectedHeld: bigint, transaction: unknown): `0x${string}`;

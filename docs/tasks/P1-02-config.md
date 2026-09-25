@@ -3,7 +3,7 @@
 Depends on: P1-01. Read `docs/SPEC.md` §3–§4.
 
 ## Goal
-One typed configuration file shape that targets the Sepolia fork or Sepolia, loaded and validated strictly.
+One typed configuration file shape that targets the armada-nitro fixturenet or Sepolia, loaded and validated strictly.
 
 ## Deliver
 `packages/config/` (`@armada-client/config`) exporting:
@@ -19,7 +19,7 @@ export interface ClientConfig {
     deployBlock: number;
     artifactsBaseUrl: string;      // e.g. https://circuits.knowable.run/v0.1.0-dev
   };
-  nitroRailgun: { adjudicator: Address; consensusApp: Address; hubCustodian?: Address };
+  armadaNitro: { adjudicator: Address; consensusApp: Address; hubCustodian?: Address };
   dataDir: string;                 // resolved to an absolute path, relative to the config file's directory
   wallet?: { rootSecretFile: string };            // file holds 32 bytes as 0x-hex
   relayer?: {
@@ -43,11 +43,7 @@ ports, `feeTtlSeconds`, `feeBufferBps` are non-negative integers; fee strings ma
 error; a missing required key is an error whose `path` names it. File paths inside the config resolve relative to
 the config file.
 
-Also deliver `config/fork.json` and `config/sepolia.json` at the repository root with the `demo3` values from
-`docs/SPEC.md` §3. `fork.json` is for processes on the kelce host: `rpcUrl` = `http://127.0.0.1:8545` (the fork's port
-is mapped to the same host port, P1-05). Containers generate their own config from the deployment file (P1-05, P1-09).
-Sepolia's `rpcUrl` is `https://ethereum-sepolia-rpc.publicnode.com`. `nitroRailgun` addresses are the zero address in
-both committed files; P1-05's `scripts/fork-config.mjs` writes a filled-in copy for the fork.
+No configuration files are committed: P1-05 generates them from armada-nitro's deployment manifests.
 
 Dependency: `ethers` 6 (pinned exact).
 
@@ -56,7 +52,7 @@ Tests in `packages/config/test/config.test.ts`, each seen failing first:
 - a valid config round-trips with checksummed addresses and absolute `dataDir`;
 - an invalid address at `armada.usdc` throws `ConfigError` with `path === "armada.usdc"`;
 - an unknown key throws; a missing `network.rpcUrl` throws with that path;
-- both committed files `config/fork.json` and `config/sepolia.json` parse.
+- a config with `armadaNitro.adjudicator` set to a non-address throws with that path.
 ```sh
 npm run check
 ```

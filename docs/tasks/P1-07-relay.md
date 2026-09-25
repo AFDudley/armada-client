@@ -33,9 +33,9 @@ accepting exactly two call shapes: `pool.transact` and `adjudicator.depositFromN
 Unit tests in `packages/relay/test/`, each seen failing first:
 - step order: an unlisted target is rejected `INVALID_TARGET` before any fee check; an unknown selector `INVALID_DATA`;
   an unknown `feesCacheId` `FEE_EXPIRED`;
-- fee verification uses **real calldata** captured from the P1-06 fork run: rerun the fork check with a quote whose
+- fee verification uses **real calldata** captured from the P1-06 fixturenet run: rerun the fixturenet check with a quote whose
   broadcaster is a fixed relayer identity and fee = 5000 (0.005 USDC); save the resulting calldata to
-  `packages/relay/test/fixtures/deposit-fee-5000.json` with a provenance note (fork block, commit, command). Tests:
+  `packages/relay/test/fixtures/deposit-fee-5000.json` with a provenance note (fixturenet block, commit, command). Tests:
   advertised 5000 passes; advertised 5001 → `FEE_INSUFFICIENT`; verifying with a different relayer identity →
   `FEE_INSUFFICIENT`.
 ```sh
