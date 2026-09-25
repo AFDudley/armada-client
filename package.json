@@ -11,15 +11,12 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "test": "node --import tsx --test \"packages/*/test/*.test.ts\" \"apps/*/test/*.test.ts\"",
+    "test": "node scripts/test.mjs",
     "check": "npm run build && npm test"
   },
   "devDependencies": {
     "@types/node": "18.19.130",
     "tsx": "4.23.15",
     "typescript": "5.9.3"
-  },
-  "dependencies": {
-    "json": "^11.0.0"
   }
 }
