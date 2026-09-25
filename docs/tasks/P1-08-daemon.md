@@ -1,0 +1,37 @@
+# P1-08 Daemon, HTTP server, CLI
+
+Depends on: P1-02, P1-06, P1-07. Read `docs/SPEC.md` §2.
+
+## Goal
+The `armada-client` executable: a daemon that serves the relayer over HTTP (relayer-v2 wire-compatible) and CLI
+commands for the wallet.
+
+## Read first
+- kelce `~/code/git_puller/repos/armada-relayer/relayer-v2/actor/src/http/server.ts` — routes, request validation,
+  error bodies, status codes. Reproduce the wire behavior for the routes below with `node:http` (no Express).
+
+## Deliver
+`apps/daemon/` (`@armada-client/daemon`, `"bin": {"armada-client": "dist/main.js"}`):
+- `armada-client --config <file> daemon` — loads config, opens the relayer's shielded wallet (for its identity and
+  fee-note balance), starts HTTP on `relayer.listen`:
+  - `GET /fees[?chainId=]` → the fee schedule JSON (404 with `supported` list for another chain);
+  - `POST /relay` body `{chainId, to, data, feesCacheId, idempotencyKey?}` → `{txHash, status: "pending"}` or
+    `{error, code}` with the `RelayError` status; 400 on missing fields (same message as relayer-v2);
+  - `GET /status/:txHash` → `{status: "pending"|"confirmed"|"failed", blockNumber?}` from the receipt;
+  - `GET /health` → `{status: "healthy", chainHead, relayerAddress}`.
+- `armada-client --config <file> wallet address|balance|sync|shield <usdc>` — wallet operations using
+  `wallet.rootSecretFile`; `shield` signs with the EOA key file given by `--eoa-key <file>`.
+- Graceful shutdown on SIGINT/SIGTERM (close HTTP, close wallets).
+
+## Acceptance (on the fork; paste output)
+With the fork running and a config pointing at it and at the deployed addresses:
+```sh
+node apps/daemon/dist/main.js --config <fork-config> daemon &
+curl -s localhost:<port>/fees          # schedule with configured fees, broadcasterRailgunAddress = relayer 0zk address
+curl -s -o /dev/null -w '%{http_code}' -XPOST localhost:<port>/relay -d '{"chainId":11155111,"to":"0x000000000000000000000000000000000000dEaD","data":"0x12345678","feesCacheId":"x"}'   # 400 (INVALID_TARGET)
+node apps/daemon/dist/main.js --config <fork-config> wallet address
+```
+`npm run check` passes.
+
+## Out of scope
+Waku. Watchtower. Authentication of the HTTP API (bind to localhost in configs).
