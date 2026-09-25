@@ -1,0 +1,25 @@
+{
+  "name": "armada-client",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": "18.20.4"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "node --import tsx --test \"packages/*/test/*.test.ts\" \"apps/*/test/*.test.ts\"",
+    "check": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "18.19.130",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "json": "^11.0.0"
+  }
+}
