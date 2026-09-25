@@ -8,10 +8,12 @@ armada-client builds no chain environment. It derives its configuration from the
 armada-nitro's reconciler writes for each network (the laconic-so fixturenet, then Sepolia).
 
 ## Manifest contract (what armada-client requires from armada-nitro)
-armada-nitro writes `deployments/<network>.json`. armada-client reads these fields and nothing else:
+armada-nitro's reconciler writes the manifest (`docs/ENVIRONMENT.md` §5 in armada-nitro): on the fixturenet,
+`manifest.json` in the deployment's `armada_env` volume; for Sepolia, the committed `env/manifests/sepolia.json`.
+armada-client reads these fields and nothing else:
 ```json
 {
-  "network":     { "name": "fixturenet", "chainId": 0, "rpcUrl": "http://…", "hostRpcUrl": "http://127.0.0.1:…" },
+  "network":     { "name": "fixturenet", "chainId": 31337, "rpcUrl": "http://…", "hostRpcUrl": "http://127.0.0.1:…" },
   "armada":      { "pool": "0x…", "usdc": "0x…", "deployBlock": 0, "artifactsBaseUrl": "https://…" },
   "armadaNitro": { "adjudicator": "0x…", "consensusApp": "0x…", "hubCustodian": "0x…" },
   "assets":      { "weth": "0x…", "wstETH": "0x…", "waUSDC": "0x…" },
