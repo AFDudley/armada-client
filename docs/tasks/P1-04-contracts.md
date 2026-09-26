@@ -6,15 +6,15 @@ Depends on: P1-01. Read `docs/SPEC.md` D10.
 Typed access to the armada-nitro contracts and the encoders the wallet and relayer need.
 
 ## Read first
-- kelce `~/src/armada-nitro/src/ArmadaNitroAdjudicator.sol` (`depositBinding`, `depositFromNote`, `SHIELD`).
-- kelce `~/src/armada-nitro/out/ArmadaNitroAdjudicator.sol/ArmadaNitroAdjudicator.json` and
+- kelce `~/code/git_puller/repos/armada-nitro/src/ArmadaNitroAdjudicator.sol` (`depositBinding`, `depositFromNote`, `SHIELD`).
+- kelce `~/code/git_puller/repos/armada-nitro/out/ArmadaNitroAdjudicator.sol/ArmadaNitroAdjudicator.json` and
   `out/HubCustodian.sol/HubCustodian.json` (field `abi`).
 - `vendor/armada-sdk/src/tx/decode.ts` (`TRANSACTION_STRUCT`, `TRANSACT_ABI`).
 
 ## Deliver
 - `scripts/sync-abis.mjs <armada-nitro-root>`: copies the `abi` arrays into `packages/contracts/abi/ArmadaNitroAdjudicator.json`
   and `HubCustodian.json`, and writes `packages/contracts/abi/SOURCE.json` = `{ "repo": "AFDudley/armada-nitro", "commit": "<git rev-parse HEAD of that root>" }`.
-  Run it against kelce `~/src/armada-nitro` at `f1a1de4` and commit the outputs.
+  Run it against kelce `~/code/git_puller/repos/armada-nitro` at `f1a1de4` and commit the outputs.
 - `packages/contracts/` (`@armada-client/contracts`) exporting:
 
 ```ts

@@ -79,7 +79,7 @@ manifest (P1-05). Switching target = switching manifest. Everything is proven on
 
 ## 6. Worker protocol (localfirst)
 
-1. Work on kelce in `~/src/armada-client`, on branch `task/<id>` from `main`. Use Node 18.20.4:
+1. Work on kelce in `~/code/git_puller/repos/armada-client`, on branch `task/<id>` from `main`. Use Node 18.20.4:
    `export PATH=$HOME/.local/node-v18.20.4-linux-x64/bin:$PATH`.
 2. Do only what the brief says. If a fact in the brief is wrong (a path, a signature, a version), stop and report the
    discrepancy with evidence instead of improvising.
