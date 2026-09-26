@@ -28,7 +28,8 @@ stop and report the difference.
 - `scripts/config-from-manifest.mjs <manifest> <out-file> [--host]`: writes a `ClientConfig` (P1-02) from the manifest,
   using `hostRpcUrl` with `--host`, else `rpcUrl`; validates it with `parseConfig` before writing. Wallet and relayer key
   file paths come from flags `--wallet-secret <file>`, `--relayer-eoa-key <file>`, `--relayer-secret <file>`,
-  `--relayer-port <n>`; relayer fees from `--fees transfer=<raw>,unshield=<raw>`.
+  `--relayer-port <n>`; relayer fees from `--fees transfer=<raw>,unshield=<raw>`. The relayer section is written with
+  `enabled: true` only when `--enable-relayer` is given; otherwise `enabled: false` (SPEC D11).
 - `data/` stays git-ignored; generated configs go there.
 
 ## Acceptance
@@ -36,7 +37,7 @@ With the armada-nitro fixturenet running (per armada-nitro's README), paste outp
 ```sh
 node scripts/config-from-manifest.mjs <deployment-dir>/…/fixturenet.json data/fixturenet.config.json --host \
   --wallet-secret data/user.secret --relayer-eoa-key <testAccounts[1].privateKeyFile> --relayer-secret data/relayer.secret \
-  --relayer-port 8600 --fees transfer=5000,unshield=5000
+  --relayer-port 8600 --fees transfer=5000,unshield=5000 --enable-relayer
 cast code --rpc-url $(jq -r .network.rpcUrl data/fixturenet.config.json) $(jq -r .armadaNitro.adjudicator data/fixturenet.config.json) | head -c 20
 ```
 The generated config parses; the adjudicator address has code on the fixturenet.

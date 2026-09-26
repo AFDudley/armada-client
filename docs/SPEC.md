@@ -19,6 +19,7 @@ self-contained.
 | D8 | **Storage: LevelDB through `abstract-level`** (`classic-level` on Linux). | `armada-sdk` `LevelStorageAdapter` and ts-nitro `DurableStore` both use level; Railway uses LevelDB on mobile (`leveldown-nodejs-mobile`). |
 | D9 | **Ethereum library: ethers 6.** | Used by `armada-sdk` (^6.14) and relayer-v2 (6.17). |
 | D10 | **Contracts: `AFDudley/armada-nitro` at `f1a1de4`**; ABIs copied from its forge `out/`. | The adjudicator (`depositFromNote`, `SHIELD` = 3) and `HubCustodian`. |
+| D11 | **Every build ships the relayer, disabled by default.** The daemon and every mobile app contain the relay package; it runs only when the config sets `relayer.enabled: true`. | One codebase for all roles (§ intro); a phone can act as a relayer by configuration, never by default. |
 
 ## 2. Layout
 
@@ -113,7 +114,8 @@ counterparty). P2-08 Acceptance e2e for the contract-layer paths of the 21.
 
 ### Phase 3 — mobile (briefs written when phase 2 merges)
 
-P3-01 React Native shell with nodejs-mobile bridge (Railway pattern). P3-02 `leveldown-nodejs-mobile` behind
+P3-01 React Native shell with nodejs-mobile bridge (Railway pattern); the relay package ships in the app, disabled by default
+(D11). P3-02 `leveldown-nodejs-mobile` behind
 `abstract-level`. P3-03 Prover on mobile. P3-04 Android 16 KB page-size compliance of the nodejs-mobile build. P3-05 UI.
 
 ## 8. Known risks (unverified)

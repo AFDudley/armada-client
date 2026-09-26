@@ -23,6 +23,7 @@ export interface ClientConfig {
   dataDir: string;                 // resolved to an absolute path, relative to the config file's directory
   wallet?: { rootSecretFile: string };            // file holds 32 bytes as 0x-hex
   relayer?: {
+    enabled: boolean;                              // default false: the relayer runs only when true (SPEC D11)
     listen: { host: string; port: number };
     eoaKeyFile: string;                            // file holds the EOA private key as 0x-hex
     shieldedRootSecretFile: string;                // file holds 32 bytes as 0x-hex
@@ -52,7 +53,8 @@ Tests in `packages/config/test/config.test.ts`, each seen failing first:
 - a valid config round-trips with checksummed addresses and absolute `dataDir`;
 - an invalid address at `armada.usdc` throws `ConfigError` with `path === "armada.usdc"`;
 - an unknown key throws; a missing `network.rpcUrl` throws with that path;
-- a config with `armadaNitro.adjudicator` set to a non-address throws with that path.
+- a config with `armadaNitro.adjudicator` set to a non-address throws with that path;
+- a `relayer` section without `enabled` parses with `enabled === false`.
 ```sh
 npm run check
 ```

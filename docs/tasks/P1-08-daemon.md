@@ -12,8 +12,8 @@ commands for the wallet.
 
 ## Deliver
 `apps/daemon/` (`@armada-client/daemon`, `"bin": {"armada-client": "dist/main.js"}`):
-- `armada-client --config <file> daemon` — loads config, opens the relayer's shielded wallet (for its identity and
-  fee-note balance), starts HTTP on `relayer.listen`:
+- `armada-client --config <file> daemon` — loads config. When `relayer.enabled` is true (SPEC D11; default false), opens
+  the relayer's shielded wallet (for its identity and fee-note balance) and starts HTTP on `relayer.listen`:
   - `GET /fees[?chainId=]` → the fee schedule JSON (404 with `supported` list for another chain);
   - `POST /relay` body `{chainId, to, data, feesCacheId, idempotencyKey?}` → `{txHash, status: "pending"}` or
     `{error, code}` with the `RelayError` status; 400 on missing fields (same message as relayer-v2);
@@ -31,6 +31,8 @@ curl -s localhost:<port>/fees          # schedule with configured fees, broadcas
 curl -s -o /dev/null -w '%{http_code}' -XPOST localhost:<port>/relay -d '{"chainId":<chainId from the manifest>,"to":"0x000000000000000000000000000000000000dEaD","data":"0x12345678","feesCacheId":"x"}'   # 400 (INVALID_TARGET)
 node apps/daemon/dist/main.js --config data/fixturenet.config.json wallet address
 ```
+Negative case: with `relayer.enabled` false (or `relayer` present without `enabled`), `daemon` starts no HTTP listener:
+`curl localhost:<port>/fees` fails to connect. Paste it.
 `npm run check` passes.
 
 ## Out of scope
