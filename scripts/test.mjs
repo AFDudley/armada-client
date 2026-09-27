@@ -9,12 +9,15 @@ for (const root of ["packages", "apps"]) {
   for (const pkg of readdirSync(root)) {
     const dir = join(root, pkg, "test");
     if (!existsSync(dir)) continue;
-    for (const f of readdirSync(dir)) if (f.endsWith(".test.ts")) files.push(join(dir, f));
+    for (const f of readdirSync(dir))
+      if (f.endsWith(".test.ts")) files.push(join(dir, f));
   }
 }
 if (files.length === 0) {
   console.error("no test files under packages/*/test or apps/*/test");
   process.exit(1);
 }
-const r = spawnSync(process.execPath, ["--import", "tsx", "--test", ...files], { stdio: "inherit" });
+const r = spawnSync(process.execPath, ["--import", "tsx", "--test", ...files], {
+  stdio: "inherit",
+});
 process.exit(r.status ?? 1);
